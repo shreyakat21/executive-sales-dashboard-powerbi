@@ -1,0 +1,28 @@
+{
+  "name": "Executive Sales",
+  "dataColors": [
+    "#2F80ED",
+    "#12239E",
+    "#D9693A",
+    "#6A1B7A",
+    "#D63AA5",
+    "#7FB2F0",
+    "#3BB3A3",
+    "#F2B134"
+  ],
+  "foreground": "#1F2A44",
+  "background": "#FFFFFF",
+  "tableAccent": "#2F80ED",
+  "textClasses": {
+    "title": {
+      "fontFace": "Segoe UI Semibold",
+      "fontSize": 13,
+      "color": "#1F2A44"
+    },
+    "label": {
+      "fontFace": "Segoe UI",
+      "fontSize": 10,
+      "color": "#3B4660"
+    }
+  }
+}

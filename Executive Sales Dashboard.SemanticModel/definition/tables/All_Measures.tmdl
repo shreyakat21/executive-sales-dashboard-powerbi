@@ -1,0 +1,37 @@
+table All_Measures
+	lineageTag: f18880ea-c0b2-41b1-bd11-d29139d2a02a
+
+	measure 'Total Revenue' = SUM ( Sales_Data[Revenue] )
+		formatString: #,0
+		lineageTag: 07ce2994-f851-4cfd-9fb2-e2171a4076a6
+
+	measure 'Total Gross Profit' = SUM ( Sales_Data[Gross Profit] )
+		formatString: #,0
+		lineageTag: 8138184a-4cf6-4ca9-abcc-6f80c92d5aab
+
+	measure 'Gross Margin' = DIVIDE ( [Total Gross Profit], [Total Revenue] )
+		formatString: 0.00%
+		lineageTag: 8746cd80-24da-40ca-b57d-77f527158ab2
+
+	measure 'Total Quantity' = SUM ( Sales_Data[Units Sold] )
+		formatString: #,0
+		lineageTag: 0cf5791b-0cd0-466e-b982-044b30b2e48e
+
+	measure 'Total Orders' = DISTINCTCOUNT ( Sales_Data[ID] )
+		formatString: #,0
+		lineageTag: 62d21199-313e-4138-9351-79411a43edbc
+
+	column Value
+		dataType: string
+		isHidden
+		lineageTag: 772bb49f-1a52-4785-bce5-8b5583f29e70
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Value]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition All_Measures = calculated
+		mode: import
+		source = {BLANK()}
+

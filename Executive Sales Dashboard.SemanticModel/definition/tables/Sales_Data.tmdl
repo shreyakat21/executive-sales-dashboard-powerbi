@@ -1,0 +1,157 @@
+table Sales_Data
+	lineageTag: 9f3ebd2c-7c4e-4875-a6eb-b26d07370c46
+
+	column ID
+		dataType: int64
+		formatString: 0
+		lineageTag: 982440d9-5688-4a7f-b402-b26c9d76a598
+		summarizeBy: none
+		sourceColumn: ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 5ca2056c-6bfd-45ad-b8d8-7a9eb3815cc8
+		summarizeBy: none
+		sourceColumn: Order Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Region
+		dataType: string
+		lineageTag: 26146e4d-993d-4c8d-87c0-7bf085f32e54
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: 2c67946a-268b-4dc8-bc7e-a583d3df98a4
+		dataCategory: Country
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales Channel'
+		dataType: string
+		lineageTag: d4ef589e-91bd-415f-bc34-3198ca258cb0
+		summarizeBy: none
+		sourceColumn: Sales Channel
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Type'
+		dataType: string
+		lineageTag: 5bff10e8-18a5-4e02-bd7c-b0acc4b18806
+		summarizeBy: none
+		sourceColumn: Customer Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Category'
+		dataType: string
+		lineageTag: 14507eba-685a-4187-adbc-2d1896387620
+		summarizeBy: none
+		sourceColumn: Product Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product
+		dataType: string
+		lineageTag: ac37de36-4ff8-4eaa-ba8e-f95c3aa27d39
+		summarizeBy: none
+		sourceColumn: Product
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Units Sold'
+		dataType: int64
+		formatString: 0
+		lineageTag: 48a60345-45dd-468a-89ed-522219e3aa6e
+		summarizeBy: sum
+		sourceColumn: Units Sold
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Unit Price'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: f81561f3-cbce-47c3-be71-67cc08ff8660
+		summarizeBy: sum
+		sourceColumn: Unit Price
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Discount %'
+		dataType: double
+		formatString: 0%
+		lineageTag: 3a21dbca-81b2-4ffb-85ff-fdb40d084ce0
+		summarizeBy: none
+		sourceColumn: Discount %
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Unit Cost'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: d6de15c1-1cb0-42a7-a050-c06b4058bfff
+		summarizeBy: sum
+		sourceColumn: Unit Cost
+
+		annotation SummarizationSetBy = Automatic
+
+	column Revenue
+		dataType: double
+		formatString: #,0.00
+		lineageTag: d71f0ab4-5093-49e9-93d9-d76c0b461476
+		summarizeBy: sum
+		sourceColumn: Revenue
+
+		annotation SummarizationSetBy = Automatic
+
+	column COGS
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 0a21c385-a8e3-4a73-9169-a28d4c36ebbc
+		summarizeBy: sum
+		sourceColumn: COGS
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Gross Profit'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 8321c962-56e0-4943-9b41-edeb2651c688
+		summarizeBy: sum
+		sourceColumn: Gross Profit
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Gross Margin %'
+		dataType: double
+		formatString: 0.00%
+		lineageTag: cbbea5b7-bff4-4b91-85fd-a4c5c232843f
+		summarizeBy: none
+		sourceColumn: Gross Margin %
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Sales_Data = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents(DataFolder & "Sales_Data.xlsx"), null, true),
+				    Data_Sheet = Source{[Item="Data",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Data_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"ID", Int64.Type}, {"Order Date", type date}, {"Region", type text}, {"Country", type text}, {"Sales Channel", type text}, {"Customer Type", type text}, {"Product Category", type text}, {"Product", type text}, {"Units Sold", Int64.Type}, {"Unit Price", type number}, {"Discount %", type number}, {"Unit Cost", type number}, {"Revenue", type number}, {"COGS", type number}, {"Gross Profit", type number}, {"Gross Margin %", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

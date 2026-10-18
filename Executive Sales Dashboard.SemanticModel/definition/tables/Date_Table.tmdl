@@ -1,0 +1,70 @@
+table Date_Table
+	lineageTag: d97b7163-8fc0-47c7-8c3c-8e7c2cc23873
+	dataCategory: Time
+
+	column Date
+		dataType: dateTime
+		isKey
+		formatString: Long Date
+		lineageTag: 3e0f34e2-b5be-4e93-b8ba-2d88f0da00e0
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: c22ac26a-092f-4f5f-9b1e-1d8d8908cb9b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: string
+		lineageTag: c46ffba1-ad01-4f01-b997-ab41b714dc4a
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month_Number
+		dataType: int64
+		formatString: 0
+		lineageTag: 7e71d3db-4787-47d0-b83e-e40958976a3c
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month_Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month_Name
+		dataType: string
+		lineageTag: 8b585823-dd01-4abc-a42c-840f1c4baec8
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month_Name]
+		sortByColumn: Month_Number
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Date_Table = calculated
+		mode: import
+		source =
+				VAR MinYear = YEAR ( MIN ( Sales_Data[Order Date] ) )
+				VAR MaxYear = YEAR ( MAX ( Sales_Data[Order Date] ) )
+				RETURN
+				    ADDCOLUMNS (
+				        CALENDAR ( DATE ( MinYear, 1, 1 ), DATE ( MaxYear, 12, 31 ) ),
+				        "Year", YEAR ( [Date] ),
+				        "Quarter", "Q" & QUARTER ( [Date] ),
+				        "Month_Number", MONTH ( [Date] ),
+				        "Month_Name", FORMAT ( [Date], "mmm" )
+				    )
+

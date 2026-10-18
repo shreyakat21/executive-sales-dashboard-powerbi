@@ -1,0 +1,4 @@
+relationship 43ced119-c25f-40bc-b68e-9eb7f533449b
+	fromColumn: Sales_Data.'Order Date'
+	toColumn: Date_Table.Date
+
